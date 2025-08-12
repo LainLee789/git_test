@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Birthday Game</title>
+<style>
+  body { margin: 0; background: #f0f8ff; display: flex; justify-content: center; align-items: center; height: 100vh; }
+  canvas { background: #fff0f5; border: 2px solid #d2691e; }
+</style>
+</head>
+<body>
+<canvas id="game" width="400" height="200"></canvas>
+<script>
+const canvas = document.getElementById('game');
+const ctx = canvas.getContext('2d');
+
+const character = new Image();
+character.src = 'character.png';
+
+const cake = new Image();
+cake.src = 'https://i.imgur.com/6J8jqjv.png'; // A simple pixel cake image from imgur
+
+let charX = 20;
+const charY = 120;
+const charWidth = 48;
+const charHeight = 64;
+
+const cakeX = 320;
+const cakeY = 120;
+const cakeWidth = 48;
+const cakeHeight = 48;
+
+let keys = {};
+let gameWon = false;
+
+window.addEventListener('keydown', e => {
+  keys[e.key] = true;
+});
+window.addEventListener('keyup', e => {
+  keys[e.key] = false;
+});
+
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Draw ground
+  ctx.fillStyle = '#a0522d';
+  ctx.fillRect(0, charY + charHeight, canvas.width, 10);
+
+  // Draw cake
+  ctx.drawImage(cake, cakeX, cakeY, cakeWidth, cakeHeight);
+
+  // Draw character
+  ctx.drawImage(character, charX, charY, charWidth, charHeight);
+
+  if (gameWon) {
+    ctx.fillStyle = 'purple';
+    ctx.font = '24px Arial';
+    ctx.fillText('Happy Birthday! 🎉', 100, 50);
+  }
+}
+
+function update() {
+  if (!gameWon) {
+    if (keys['ArrowRight']) {
+      charX += 3;
+      if (charX + charWidth > canvas.width) charX = canvas.width - charWidth;
+    }
+    if (keys['ArrowLeft']) {
+      charX -= 3;
+      if (charX < 0) charX = 0;
+    }
+
+    // Check collision with cake
+    if (
+      charX < cakeX + cakeWidth &&
+      charX + charWidth > cakeX &&
+      charY < cakeY + cakeHeight &&
+      charY + charHeight > cakeY
+    ) {
+      gameWon = true;
+    }
+  }
+}
+
+function loop() {
+  update();
+  draw();
+  requestAnimationFrame(loop);
+}
+
+character.onload = () => {
+  loop();
+};
+</script>
+</body>
+</html>
