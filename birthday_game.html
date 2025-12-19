@@ -18,7 +18,7 @@ const character = new Image();
 character.src = 'character.png';
 
 const cake = new Image();
-cake.src = 'https://i.imgur.com/6J8jqjv.png'; // A simple pixel cake image from imgur
+cake.src = 'https://i.imgur.com/6J8jqjv.png'; 
 
 let charX = 20;
 const charY = 120;
@@ -43,14 +43,13 @@ window.addEventListener('keyup', e => {
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // Draw ground
+
   ctx.fillStyle = '#a0522d';
   ctx.fillRect(0, charY + charHeight, canvas.width, 10);
 
-  // Draw cake
+
   ctx.drawImage(cake, cakeX, cakeY, cakeWidth, cakeHeight);
 
-  // Draw character
   ctx.drawImage(character, charX, charY, charWidth, charHeight);
 
   if (gameWon) {
@@ -71,7 +70,6 @@ function update() {
       if (charX < 0) charX = 0;
     }
 
-    // Check collision with cake
     if (
       charX < cakeX + cakeWidth &&
       charX + charWidth > cakeX &&
